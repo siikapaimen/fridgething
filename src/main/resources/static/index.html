@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>React + Spring</title>
+</head>
+
+<body>
+    <div class='container'>
+        <div id='root'></div>
+	</div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react.min.js"></script>
+    <script src="https://fb.me/react-dom-15.0.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+
+
+	<script type="text/babel">
+	class App extends React.Component {
+		  constructor(props) {
+		      super(props);
+              this.loadStudentsFromServer = this.loadStudentsFromServer.bind(this);
+              this.onDelete = this.onDelete.bind(this);
+             this.createStudent = this.createStudent.bind(this);
+		      this.state = {
+		          students: [],
+		      };
+		   }
+		 
+		  componentDidMount() {
+			// Call load students
+              this.loadStudentsFromServer();
+		  }
+		  
+		  // Load students from database
+		  loadStudentsFromServer() {
+              console.log('fetching...');
+              
+		      fetch('http://localhost:8080/api/students') 
+			  	// Write your code here for fetching students
+                .then(result => result.json())
+                .then(result => {
+                  var num = result._embedded.students.length;
+                  
+                  this.setState({students: result._embedded.students});
+                  })
+                  
+                  
+                  
+              }
+		           
+        //kerrotaan lapsenlapselle eli studentille deletestä
+//lapset kuuntelee vaan vanhempia eli appin pitää kertoa studentTableille
+        
+		  
+        onDelete(student){
+            fetch(student._links.self.href, {method: 'DELETE'})
+            .then(res => this.loadStudentsFromServer());
+            
+        }
+        
+        // Create new student
+	  createStudent(student) {
+          console.log('create student!');
+          
+        // POST Fetch call to add student
+         fetch('http://localhost:8080/api/students', 
+               {
+             method: 'POST', 
+             headers: {'Accept': 'application/json','Content-Type': 'application/json'},
+               body: JSON.stringify(student)
+         })
+          
+            .then(res => this.loadStudentsFromServer());
+          //console.log(student);
+          
+	   }
+        
+        
+		  
+		  render() {
+		    return (
+		       <div>
+        <StudentForm createStudent={this.createStudent}/>
+        <StudentTable data={this.state.students} onDelete={this.onDelete}/>
+        
+		       </div>
+		    );
+		  }
+		}
+		    	
+	class StudentTable extends React.Component {
+		constructor(props) {
+			super(props);
+		}
+		    
+		render() {
+            	// Write your code here to render StudentTable
+                var rows = this.props.data.map(item =>
+                    <Student lodju={item} onDelete={this.props.onDelete}/>
+            );
+	    	return (
+        
+    <table>
+        <thead>
+          <tr>
+            <th>Firstname</th>
+            <th>Surname</th>
+              <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>{rows}</tbody>
+        
+      </table>
+	   );
+	  }
+	}
+		        
+	class Student extends React.Component {
+	    constructor(props) {
+	        super(props);
+            this.handleDelete = this.handleDelete.bind(this);
+	    }
+        
+        handleDelete(){
+            this.props.onDelete(this.props.lodju);
+        }
+	 
+	    render() {
+	        return (
+				// Write your code here to render StudentTableRow
+
+                <tr>
+                    <td>{this.props.lodju.firstName}</td>
+                    <td>{this.props.lodju.lastName}</td>
+                    <td>{this.props.lodju.email}</td>
+                    <td><button className="btn btn-danger" onClick={this.handleDelete}>Delete</button></td>
+                </tr>);
+
+	    } 
+	}
+
+
+class StudentForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {firstname: '', lastname: '', email: ''};
+        this.handleSubmit = this.handleSubmit.bind(this);   
+        this.handleChange = this.handleChange.bind(this);     
+    }
+
+    
+    
+    
+    handleChange(event) {
+        console.log(event);
+       // Set states here
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+    }    
+    
+    handleSubmit(event) {
+        // Create new srudent object and call createStudent
+        var student = {firstName: this.state.firstname, lastName: this.state.lastname, email: this.state.email};
+        //console.log(student);
+        this.props.createStudent(student);
+    }
+    
+    render() {
+        return (
+            <div className="panel panel-default">
+                <div className="panel-heading">Create student</div>
+                <div className="panel-body">
+                
+                    <div className="col-md-2">
+                        <input type="text" placeholder="Firstname" className="form-control"  name="firstname" onChange={this.handleChange}/>    
+                    </div>
+                    <div className="col-md-2">       
+                        <input type="text" placeholder="Lastname" className="form-control" name="lastname" onChange={this.handleChange}/>
+                    </div>
+                    <div className="col-md-2">
+                        <input type="text" placeholder="Email" className="form-control" name="email" onChange={this.handleChange}/>
+                    </div>
+                    <div className="col-md-2">
+                        <button className="btn btn-success" onClick={this.handleSubmit}>Save</button>   
+                    </div>        
+                
+                </div>      
+            </div>         
+        );
+    }
+}
+
+
+	ReactDOM.render(<App />, document.getElementById('root') );	
+	</script>
+
+</body>
+</html>
