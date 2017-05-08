@@ -39,13 +39,13 @@
 		  loadStudentsFromServer() {
               console.log('fetching...');
               
-		      fetch('http://localhost:8080/api/students') 
+		      fetch('http://localhost:8080/api/foods') 
 			  	// Write your code here for fetching students
                 .then(result => result.json())
                 .then(result => {
-                  var num = result._embedded.students.length;
+                  var num = result._embedded.foods.length;
                   
-                  this.setState({students: result._embedded.students});
+                  this.setState({students: result._embedded.foods});
                   })
                   
                   
@@ -67,7 +67,7 @@
           console.log('create student!');
           
         // POST Fetch call to add student
-         fetch('http://localhost:8080/api/students', 
+         fetch('http://localhost:8080/api/foods', 
                {
              method: 'POST', 
              headers: {'Accept': 'application/json','Content-Type': 'application/json'},
@@ -132,14 +132,12 @@
 	    render() {
 	        return (
 				// Write your code here to render StudentTableRow
-
                 <tr>
                     <td>{this.props.lodju.firstName}</td>
                     <td>{this.props.lodju.lastName}</td>
                     <td>{this.props.lodju.email}</td>
-                    <td><button className="btn btn-danger" onClick={this.handleDelete}>Delete</button></td>
+                    <td><button onClick={this.handleDelete}>Delete</button></td>
                 </tr>);
-
 	    } 
 	}
 

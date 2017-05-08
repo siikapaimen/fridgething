@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Student {
+public class Food {
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
@@ -15,10 +15,10 @@ public class Student {
 	private String lastName;
 	private String email;
 
-	public Student() {
+	public Food() {
 	}
 	
-	public Student(String firstName, String lastName, String email) {
+	public Food(String firstName, String lastName, String email) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
@@ -58,7 +58,7 @@ public class Student {
 
 	@Override
 	public String toString() {
-		return "Student [firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + "]";
+		return "Food [firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + "]";
 	}
 	
 	
