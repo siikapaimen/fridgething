@@ -11,19 +11,24 @@ public class Food {
     @GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
-	private String firstName;
-	private String lastName;
-	private String email;
+	private String food;
+	private String brand;
+	
+	public Food(String food, String brand) {
+		super();
+		this.food = food;
+		this.brand = brand;
+	}
+
+	public Food(Long id) {
+		super();
+		this.id = id;
+	}
 
 	public Food() {
+		super();
 	}
-	
-	public Food(String firstName, String lastName, String email) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -32,34 +37,31 @@ public class Food {
 		this.id = id;
 	}
 
-	public String getFirstName() {
-		return firstName;
+	public String getFood() {
+		return food;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setFood(String food) {
+		this.food = food;
 	}
 
-	public String getLastName() {
-		return lastName;
+	public String getBrand() {
+		return brand;
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
+	public void setBrand(String brand) {
+		this.brand = brand;
 	}
 
 	@Override
 	public String toString() {
-		return "Food [firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + "]";
+		return "Food [id=" + id + ", food=" + food + ", brand=" + brand + "]";
 	}
+	
+	
+	
+	
+
 	
 	
 }

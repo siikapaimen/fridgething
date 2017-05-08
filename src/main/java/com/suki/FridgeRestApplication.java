@@ -18,15 +18,10 @@ public class FridgeRestApplication {
 	@Bean
 	public CommandLineRunner demo(FoodRepository repository) {
 		return (args) -> {
-			repository.save(new Food("Mary", "Poppins", "mary@mail.com"));
-			repository.save(new Food("John", "Johnson", "john@mail.com"));
-			repository.save(new Food("Mike", "Mitchell", "mike@email.com"));
-			repository.save(new Food("Mary", "Poppins", "mary@mail.com"));
-			repository.save(new Food("John", "Johnson", "john@mail.com"));
-			repository.save(new Food("Mike", "Mitchell", "mike@email.com"));
-			repository.save(new Food("Mary", "Poppins", "mary@mail.com"));
-			repository.save(new Food("John", "Johnson", "john@mail.com"));
-			repository.save(new Food("Mike", "Mitchell", "mike@email.com"));
+			repository.save(new Food("Banaani", "Pirkka"));
+			repository.save(new Food("Mansikkarahka", "Rainbow"));
+			repository.save(new Food("Tonnikala", "Fisukalamerkki"));
+			repository.save(new Food("Maito", "Valio"));
 		};	
 	}
 }
